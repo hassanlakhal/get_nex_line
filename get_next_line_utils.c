@@ -6,7 +6,7 @@
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 02:36:21 by hlakhal-          #+#    #+#             */
-/*   Updated: 2022/11/13 00:35:57 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2022/11/14 00:16:15 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,15 @@ char	*ft_strdup(const char *src)
 	return (new);
 }
 
-char	*ft_strchr(const char *s, int c)
+int	ft_search(const char *s, int c)
 {
-	while (s[0] != (char)c)
+	int i;
+	i = 0;
+	while (s[i])
 	{
-		if (s[0] == '\0')
+		if (s[i] == c)
 			return (0);
-		s++;
+		i++;
 	}
-	return ((char *)s);
+	return (1);
 }

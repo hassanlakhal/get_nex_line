@@ -6,7 +6,7 @@
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 21:47:17 by hlakhal-          #+#    #+#             */
-/*   Updated: 2022/11/13 04:52:15 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2022/11/14 00:19:01 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,17 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 	i = 0;
 	j = 0;
-	if (!s2)
-		return (NULL);
 	if (!s1)
 		return ft_strdup((char *)s2);
 	newstr = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!newstr)
 		return (0);
-	while (i < (int)ft_strlen(s1))
+	while (s1[i])
 	{
 		newstr[i] = s1[i];
 		i++;
 	}
-	while (j < (int)ft_strlen(s2))
+	while (s2[j])
 	{
 		newstr[i++] = s2[j];
 		j++;
@@ -47,10 +45,8 @@ char *ft_next(char *buffer)
 	char *str;
 	int j;
 	int i;
-	i =0;
-	if (!buffer)
-		return NULL;
 
+	i = 0;
 	while (buffer[i] && buffer[i] != '\n')
 		i++;
 	if (!buffer[i] || !buffer[i + 1])
@@ -58,7 +54,9 @@ char *ft_next(char *buffer)
 		free(buffer);
 		return NULL;
 	}
-	str = malloc((ft_strlen(buffer) - i ) * sizeof(char));
+	str = malloc((ft_strlen(buffer) - i) * sizeof(char));
+	if (!str)
+		return NULL;
 	j = 0;
 	i++;
 	while (buffer[i])
@@ -80,11 +78,12 @@ char	*ret_line(char *str)
 		return (NULL);
 	while (str[j] != '\0' && str[j] != '\n')
 		j++;
-	j++;
+	if(str[j] == '\n')
+		j++;
 	new = malloc(j + 1);
 	if (!new)
 		return (NULL);
-	while (i < j)
+	while (str[i] != '\0' && str[i] != '\n')
 	{
 		new[i] = str[i];
 		i++;
@@ -95,44 +94,45 @@ char	*ret_line(char *str)
 	return (new);
 }
 
-char *rempler(int fd, char *temp)
+char *ft_read(int fd, char *temp)
 {
 	char *str;
-	str = malloc((BUFFER_SIZE  + 1)* sizeof(char));
+	int red;
+	str = malloc(BUFFER_SIZE  + 1);
 	if (!str)
 		return NULL;
-	int red;
-	size_t i;
-	i =0;
-     red = 1;
-	 while (red)
+	str[0] = '\0';
+	 while (ft_search(str,'\n'))
 	 {
 		red = read(fd,str,BUFFER_SIZE);
 		if (red == -1)
 		{
 			free(str);
-			free(temp);
+			if (temp)
+				free(temp);
 			return NULL;
 		}
 		 if (!red)
 			break;
 		str[red] = '\0';
 		temp = ft_strjoin(temp,str);
-		if (ft_strchr(str,'\n'))
-			break;
 	 }
 	 free(str);
 	 return temp;
 }
+
 char *get_next_line(int fd)
 {
 	char *buffer ;
 	static char *temp;
-	buffer = NULL;
+
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return NULL;
-	temp = rempler(fd,temp);
+	temp = ft_read(fd,temp);
+	if (!temp)
+		return NULL;
 	buffer = ret_line(temp);
 	temp = ft_next(temp);
+
 	return buffer;
 }

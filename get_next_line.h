@@ -6,7 +6,7 @@
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 21:57:34 by hlakhal-          #+#    #+#             */
-/*   Updated: 2022/11/13 02:39:02 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2022/11/13 23:55:16 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,6 @@ size_t	ft_strlen(const char *s);
 char	*ft_strdup(const char *src);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strjoin(char const *s1, char const *s2);
+int		ft_search(const char *s,int c);
 
 #endif
