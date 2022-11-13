@@ -6,7 +6,7 @@
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 21:47:17 by hlakhal-          #+#    #+#             */
-/*   Updated: 2022/11/13 03:55:31 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2022/11/13 04:52:15 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,22 +94,7 @@ char	*ret_line(char *str)
 	new[i] = '\0';
 	return (new);
 }
-int	end_line(char *str)
-{
 
-int i;
-i =0;
-	if (!str)
-		return (0);
-
-	while (str[i])
-	{
-		if (str[i] == '\n')
-			return (0);
-		i++;
-	}
-	return (1);
-}
 char *rempler(int fd, char *temp)
 {
 	char *str;
@@ -119,8 +104,7 @@ char *rempler(int fd, char *temp)
 	int red;
 	size_t i;
 	i =0;
-	str[0] = 0;
-
+     red = 1;
 	 while (red)
 	 {
 		red = read(fd,str,BUFFER_SIZE);
@@ -134,6 +118,8 @@ char *rempler(int fd, char *temp)
 			break;
 		str[red] = '\0';
 		temp = ft_strjoin(temp,str);
+		if (ft_strchr(str,'\n'))
+			break;
 	 }
 	 free(str);
 	 return temp;
@@ -150,15 +136,3 @@ char *get_next_line(int fd)
 	temp = ft_next(temp);
 	return buffer;
 }
-// int main()
-// {
-// 	int fd = open("test.txt", O_RDONLY | O_CREAT);
-// 	get_next_line(fd);
-// 	//get_next_line(fd);
-// 	// get_next_line(fd);
-// 	//printf("%s",get_next_line(fd));
-// 	//  printf("%s",get_next_line(fd));
-// 	// printf("%s",get_next_line(fd));
-// 	//printf("%s",get_next_line(fd));
-// 	// printf("%s",get_next_line(fd));
-//  }
