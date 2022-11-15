@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/11 21:47:17 by hlakhal-          #+#    #+#             */
-/*   Updated: 2022/11/15 15:28:05 by hlakhal-         ###   ########.fr       */
+/*   Created: 2022/11/14 02:20:47 by hlakhal-          #+#    #+#             */
+/*   Updated: 2022/11/15 15:29:02 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
@@ -54,7 +54,7 @@ char	*ft_next(char *buffer)
 		free(buffer);
 		return (NULL);
 	}
-	str = malloc((ft_strlen(buffer) - i) * sizeof(char));
+	str = (char *)malloc((ft_strlen(buffer) - i) * sizeof(char));
 	if (!str)
 		return (NULL);
 	j = 0;
@@ -125,14 +125,14 @@ char	*ft_read(int fd, char *temp)
 char	*get_next_line(int fd)
 {
 	char		*buffer;
-	static char	*temp;
+	static char	*temp[10240];
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	temp = ft_read(fd, temp);
-	if (!temp)
+	temp[fd] = ft_read(fd, temp[fd]);
+	if (!temp[fd])
 		return (NULL);
-	buffer = ret_line(temp);
-	temp = ft_next(temp);
+	buffer = ret_line(temp[fd]);
+	temp[fd] = ft_next(temp[fd]);
 	return (buffer);
 }
